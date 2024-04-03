@@ -1,0 +1,21 @@
+<%- include('./partials/header.ejs') %>
+
+        <div class="container p-4">
+
+            <% if (messages.error) { %>
+            <div class="alert alert-danger" role="alert">
+                <p><%= messages.error %></p>
+            </div>
+            <% } %>
+
+            <% if (messages.success) { %>
+            <div class="alert alert-success" role="alert">
+                <p><%= messages.success %></p>
+            </div>
+            <% } %>
+
+            <h2 class="text-center">Bienvenue <%= USER.firstName %> !</h2>
+
+        </div>
+
+<%- include('./partials/footer.ejs') %>
