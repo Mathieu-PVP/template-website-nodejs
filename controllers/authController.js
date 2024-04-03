@@ -3,11 +3,7 @@ const passport = require('passport');
 const User = require("../models/User");
 
 const loginView = (req, res) => {
-    res.render('login', {
-        pageTitle: 'Se connecter',
-        email: '',
-        password: ''
-    });
+    res.render('login', { pageTitle: 'Se connecter', email: '', password: '' });
 };
 
 const loginUser = (req, res, next) => {
@@ -15,11 +11,7 @@ const loginUser = (req, res, next) => {
 
     if (!email || !password) {
         req.flash('error', 'Veuillez remplir tous les champs requis !');
-        return res.render('login', {
-            pageTitle: 'Se connecter',
-            email,
-            password
-        });
+        return res.render('login', { pageTitle: 'Se connecter', ...req.body });
     }
 
     passport.authenticate('local', {
@@ -41,13 +33,7 @@ const logoutUser = (req, res) => {
 };
 
 const registerView = (req, res) => {
-    res.render('register', {
-        pageTitle: 'S\'enregistrer',
-        lastName: '',
-        firstName: '',
-        email: '',
-        password: ''
-    });
+    res.render('register', { pageTitle: 'S\'enregistrer', lastName: '', firstName: '', email: '', password: '' });
 };
 
 const registerUser = async (req, res) => {
@@ -56,45 +42,22 @@ const registerUser = async (req, res) => {
     try {
         if (!lastName || !firstName || !email || !password) {
             req.flash('error', 'Veuillez remplir tous les champs requis');
-            return res.render('register', {
-                pageTitle: 'S\'enregistrer',
-                lastName,
-                firstName,
-                email,
-                password
-            });
+            return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
         }
 
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) {
             req.flash('error', 'Un utilisateur avec cet email existe déjà !');
-            return res.render('register', {
-                pageTitle: 'S\'enregistrer',
-                lastName,
-                firstName,
-                email,
-                password
-            });
+            return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
         }
 
-        await User.create({
-            lastName,
-            firstName,
-            email,
-            password
-        });
+        await User.create({ ...req.body });
 
         req.flash('success', 'Votre compte a bien été créé !');
         res.redirect('/auth/login');
     } catch (error) {
         req.flash('error', 'Un utilisateur avec cet email existe déjà !');
-        return res.render('register', {
-            pageTitle: 'S\'enregistrer',
-            lastName,
-            firstName,
-            email,
-            password
-        });
+        return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
     }
 };
 
