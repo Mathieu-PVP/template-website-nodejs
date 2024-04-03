@@ -11,8 +11,8 @@ const hashPassword = async (password) => {
     return hashedPassword.toString();
 };
 
-const compareHash = async (hash1, hash2) => {
-    const isMatch = await bcrypt.compare(hash1, hash2);
+const compareHash = async (string, hash) => {
+    const isMatch = await bcrypt.compare(string, hash);
     return isMatch;
 }
 
