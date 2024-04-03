@@ -1,10 +1,15 @@
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
+const { hashPassword } = require('../utils/token');
 
 const sequelize = require('../config/sequelize');
 const tableName = 'User';
 
 const User = sequelize.define(tableName, {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     firstName: {
         type: DataTypes.STRING,
         allowNull: false
@@ -21,18 +26,28 @@ const User = sequelize.define(tableName, {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    resetToken: {
+        type: DataTypes.STRING
+    },
+    resetTokenExpires: {
+        type: DataTypes.DATE
     }
 }, {
     hooks: {
         beforeCreate: async (user) => {
-            const hashedPassword = await bcrypt.hash(user.password, 10);
-            user.password = hashedPassword;
+            user.password = await hashPassword(user.password);
+        },
+        beforeUpdate: async (user) => {
+            if (user.changed('password')) {
+                user.password = await hashPassword(user.password);
+            }
         }
     }
 });
 
 (async () => {
-    let opt =  process.env.APP_PRODUCTION_MODE === true ? { alter: true } : { alter: false };
+    let opt =  process.env.APP_PRODUCTION_MODE === true ? { alter: true, force: true } : { alter: false };
     await sequelize.sync(opt);
     console.log(`Synchronisation de la table "${tableName}" effectuée avec succès !`);
 })();

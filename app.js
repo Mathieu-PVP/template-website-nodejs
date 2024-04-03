@@ -32,6 +32,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
+    req.mailer_transporter = require('./config/mailer');
     res.locals.SITE_NAME = process.env.APP_NAME || null; 
     res.locals.USER = req.user || null;
     next();

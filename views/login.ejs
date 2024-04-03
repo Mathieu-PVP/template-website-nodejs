@@ -1,6 +1,6 @@
 <%- include('./partials/header.ejs') %>
 
-        <div class="container p-4">
+        <div class="container">
 
             <% if (messages.error) { %>
             <div class="alert alert-danger" role="alert">
@@ -29,6 +29,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Se connecter</button>
                 <div class="form-text">Pas de compte ? <a href="/auth/register" alt="S'enregistrer">Enregistrez-vous</a> dès maintenant.</div>
+                <div class="form-text">Mot de passe perdu ? <a href="/auth/forgot-password" alt="Réinitialiser mot de passe">Réinitialisez-le</a> dès maintenant.</div>
             </form>
 
         </div>

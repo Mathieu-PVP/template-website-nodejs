@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
 const { Strategy } = require('passport-local');
+const { compareHash } = require('../utils/token');
 
 const User = require('../models/User');
 
@@ -9,7 +9,7 @@ const loginAuth = (passport) => {
             const user = await User.findOne({ where: { email } });
             if (!user) { return done(null, false, { message: 'Aucun utilisateur n\'a été trouvé avec cet e-mail !' }); }
 
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await compareHash(password, user.password);
             if (isMatch) { return done(null, user); }
             else { return done(null, false, { message: 'Mot de passe incorrect !' }); }
         } catch (error) {
