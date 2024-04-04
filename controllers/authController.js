@@ -82,11 +82,12 @@ const forgotPasswordUser = async (req, res) => {
 
         await user.save();
 
+        const hostname = (req.hostname === 'localhost' || req.hostname === '127.0.0.1') ? `${req.hostname}:${process.env.PORT || 3000}` : req.hostname;
         req.mailer_transporter.sendMail({
             from: process.env.MAILER_SMTP_AUTH_USER,
             to: req.body.email,
             subject: 'Réinitialisation de mot de passe',
-            text: `Vous avez demandé une réinitialisation de mot de passe. Veuillez suivre ce lien pour réinitialiser votre mot de passe : http://${req.hostname}/auth/reset-password?token=${resetToken}`
+            text: `Vous avez demandé une réinitialisation de mot de passe. Veuillez suivre ce lien pour réinitialiser votre mot de passe : http://${hostname}/auth/reset-password?token=${resetToken}`
         }, (error, info) => {
             if (error) {
                 req.flash('error', 'Une erreur s\'est produite lors de l\'envoi de l\'e-mail de réinitialisation de mot de passe !');
