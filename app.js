@@ -22,8 +22,11 @@ loginAuth(passport);
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
     secret: process.env.APP_SESSION_SECRET,
-    saveUninitialized: true,
-    resave: true
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (3600000) * (process.env.APP_SESSION_COOKIE_MAXAGE || 12) // APP_SESSION_COOKIE_MAXAGE sa valeur par défaut est 12 et est en heures
+    }
 }));
 
 app.use(flash());
