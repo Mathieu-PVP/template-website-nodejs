@@ -82,7 +82,8 @@ const forgotPasswordUser = async (req, res) => {
 
         await user.save();
 
-        const hostname = (req.hostname === 'localhost' || req.hostname === '127.0.0.1') ? `${req.hostname}:${process.env.PORT || 3000}` : req.hostname;
+        const hostname = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(req.hostname)
+            || req.hostname === 'localhost' ? `${req.hostname}:${process.env.PORT || 3000}` : req.hostname;
         req.mailer_transporter.sendMail({
             from: process.env.MAILER_SMTP_AUTH_USER,
             to: req.body.email,
