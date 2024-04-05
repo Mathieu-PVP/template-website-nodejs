@@ -41,9 +41,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', require('./routes/index'));
-app.use('/dashboard', require('./routes/dashboard'));
-app.use('/auth', require('./routes/auth'));
+app.use('/', require('./routes/indexRoutes'));
+app.use('/dashboard', require('./routes/dashboardRoutes'));
+app.use('/auth', require('./routes/authRoutes'));
 
 app.listen(app.get('port'), () => {
     console.log('Application lancée sur le port : ', app.get('port'));

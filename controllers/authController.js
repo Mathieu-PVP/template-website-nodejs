@@ -1,8 +1,8 @@
 const passport = require('passport');
 const { Op } = require('sequelize');
-const { generateToken, compareHash } = require('../utils/token');
 
-const User = require('../models/User');
+const userService = require('../services/userService');
+const { generateToken, compareHash } = require('../utils/token');
 
 const loginView = (req, res) => {
     res.render('login', { pageTitle: 'Se connecter', email: '', password: '' });
@@ -47,19 +47,19 @@ const registerUser = async (req, res) => {
             return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
         }
 
-        const existingUser = await User.findOne({ where: { email } });
+        const existingUser = await userService.findUserByEmail(email);
         if (existingUser) {
             req.flash('error', 'Un utilisateur avec cet email existe déjà !');
             return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
         }
 
-        await User.create({ ...req.body });
+        await userService.createUser(req.body);
 
         req.flash('success', 'Votre compte a bien été créé !');
         res.redirect('/auth/login');
     } catch (error) {
-        req.flash('error', 'Un utilisateur avec cet email existe déjà !');
-        return res.render('register', { pageTitle: 'S\'enregistrer', ...req.body });
+        req.flash('error', 'Une erreur s\'est produite lors de la création du compte !');
+        res.redirect('/auth/register');
     }
 };
 
@@ -69,7 +69,7 @@ const forgotPasswordView = (req, res) => {
 
 const forgotPasswordUser = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await userService.findUserByEmail(req.body.email);
 
         if (!user) {
             req.flash('error', 'Adresse e-mail non-trouvée');
@@ -106,7 +106,7 @@ const forgotPasswordUser = async (req, res) => {
 };
 
 const resetPasswordView = async (req, res) => {
-    const user = await User.findOne({ where: { resetToken: req.query.token, resetTokenExpires: { [Op.gt]: Date.now() } } });
+    const user = await userService.findUserByResetToken(req.query.token);
 
     if (!user) {
         req.flash('error', 'Lien de réinitialisation de mot de passe invalide ou expiré !');
@@ -118,7 +118,7 @@ const resetPasswordView = async (req, res) => {
 
 const resetPasswordUser = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { resetToken: req.query.token, resetTokenExpires: { [Op.gt]: Date.now() } } });
+        const user = await userService.findUserByResetToken(req.query.token);
 
         if (!user) {
             req.flash('error', 'Lien de réinitialisation de mot de passe invalide ou expiré !');
