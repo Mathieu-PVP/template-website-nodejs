@@ -1,4 +1,4 @@
-<%- include('./partials/header.ejs') %>
+<%- include('./layouts/header.ejs') %>
 
         <div class="container p-4">
 
@@ -7,7 +7,6 @@
                 <p><%= messages.error %></p>
             </div>
             <% } %>
-
 
             <% if (messages.success) { %>
             <div class="alert alert-success" role="alert">
@@ -40,4 +39,4 @@
 
         </div>
 
-<%- include('./partials/footer.ejs') %>
+<%- include('./layouts/footer.ejs') %>
