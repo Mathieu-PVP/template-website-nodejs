@@ -17,10 +17,12 @@ Un template de site internet développé dans le but de gagner du temps lors du 
    ```
    git clone https://github.com/Mathieu-PVP/template-website-nodejs.git
    ```
-3. Installez les dépendances :
+2. Installez les dépendances :
    ```
    npm install
    ```
+3. Configurez le fichier `.env` avec vos informations
+   
 5. Démarrez le serveur web :
    ```
    node app.js
