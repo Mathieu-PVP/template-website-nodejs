@@ -9,7 +9,7 @@
 [![GitHub contributors](https://badgen.net/github/contributors/Mathieu-PVP/template-website-nodejs)](https://GitHub.com/Mathieu-PVP/template-website-nodejs/graphs/contributors/)
 [![GitHub issues](https://badgen.net/github/issues/Mathieu-PVP/template-website-nodejs/)](https://GitHub.com/Mathieu-PVP/template-website-nodejs/issues/)
 
-Un template de site internet développé dans le but de gagner du temps lors du développement de projets écris avec Node.js
+Un template de site internet développé dans le but de gagner du temps lors du développement de projets écrits avec Node.js
 
 ## Installation
 
